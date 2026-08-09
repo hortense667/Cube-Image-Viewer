@@ -1,0 +1,1042 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#111827">
+<title>90 Days Cube</title>
+<style>
+:root{color-scheme:dark;--bg:#090d16;--panel:#111827;--panel2:#172033;--line:#2a3850;--text:#f4f7fb;--muted:#9eabc0;--accent:#7dd3fc;--danger:#fb7185}
+*{box-sizing:border-box}html,body{height:100%;margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",sans-serif}body{overflow:hidden}button,input,select{font:inherit}button{color:inherit}.app{display:grid;grid-template-columns:minmax(320px,410px) 1fr;height:100dvh}.sidebar{overflow:auto;padding:18px;background:linear-gradient(180deg,#111827,#0b1220);border-right:1px solid var(--line)}h1{font-size:20px;margin:0 0 4px}.lead{font-size:12px;color:var(--muted);margin:0 0 16px;line-height:1.55}.section{border:1px solid var(--line);background:rgba(23,32,51,.7);border-radius:14px;padding:13px;margin:0 0 12px}.section h2{font-size:13px;margin:0 0 11px;color:#dce7f7}.upload{display:flex;gap:8px;align-items:center;margin-bottom:10px}.upload input{position:absolute;opacity:0;pointer-events:none}.upload label{display:block;flex:1;text-align:center;border:1px solid #3a4a64;background:#182338;border-radius:10px;padding:10px;cursor:pointer}.net{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;max-width:350px;margin:auto}.face{position:relative;aspect-ratio:1;border:1px dashed #49617f;border-radius:10px;background:#0d1524;overflow:hidden;display:flex;align-items:center;justify-content:center;cursor:grab;touch-action:none;user-select:none}.face.dragging{opacity:.45;outline:3px solid var(--accent)}.face.over{outline:3px solid var(--accent);outline-offset:-4px}.face.empty{visibility:hidden;pointer-events:none}.face img{position:absolute;inset:0;width:100%;height:100%;object-fit:fill;display:none}.face.has img{display:block}.face-label{z-index:2;font-size:11px;font-weight:700;padding:3px 6px;border-radius:999px;background:rgba(0,0,0,.62)}.face.has .face-label{position:absolute;left:5px;top:5px}.row{display:grid;grid-template-columns:76px 1fr 48px;align-items:center;gap:8px;margin:9px 0}.row label{font-size:12px;color:#c7d2e2}.row output{font-size:11px;color:var(--muted);text-align:right;font-variant-numeric:tabular-nums}input[type=range]{width:100%;accent-color:var(--accent)}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}button,select{border:1px solid #3a4a64;background:#182338;border-radius:10px;padding:9px 10px;cursor:pointer}button:hover{background:#22304a}button.primary{background:#075985;border-color:#0ea5e9}button.primary:hover{background:#0369a1}button.danger{color:#fecdd3}.hint,.status{font-size:11px;color:var(--muted);line-height:1.5;margin-top:8px}.status{min-height:1.5em}.checks-row{display:grid;grid-template-columns:76px 1fr;align-items:center;gap:8px;margin-top:10px}.checks-row>.checks-label{font-size:12px;color:#c7d2e2}.checks{display:flex;flex-wrap:wrap;gap:14px 18px;font-size:12px;color:#c7d2e2}.checks label{display:flex;align-items:center;gap:7px;cursor:pointer;user-select:none}.checks input{accent-color:var(--accent);width:15px;height:15px}.stage{position:relative;min-width:0;background:radial-gradient(circle at 50% 38%,#243044 0,#101827 42%,#060910 100%)}#viewport{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:none}.topbar{position:absolute;left:12px;right:12px;top:max(12px,env(safe-area-inset-top));display:flex;justify-content:space-between;gap:8px;pointer-events:none}.badge,.top-actions,.make-own{pointer-events:auto;background:rgba(7,12,22,.64);border:1px solid rgba(148,163,184,.28);backdrop-filter:blur(12px);border-radius:12px;padding:7px 10px;font-size:12px;color:#d7e1ef}.top-actions{display:flex;gap:6px;padding:5px}.top-actions button{padding:7px 9px;background:transparent;border:0}.make-own{display:none;text-decoration:none;line-height:1.35;max-width:min(70vw,280px)}.make-own:hover{background:rgba(14,24,40,.82);border-color:rgba(125,211,252,.45)}.make-own strong{display:block;color:#f4f7fb;font-size:12px;font-weight:700}.make-own span{display:block;color:var(--accent);font-size:11px;margin-top:2px}.toast{position:absolute;left:50%;bottom:max(18px,env(safe-area-inset-bottom));transform:translateX(-50%) translateY(20px);opacity:0;transition:.22s;background:rgba(4,9,18,.9);border:1px solid #334155;border-radius:16px;padding:8px 13px;font-size:12px;pointer-events:none;max-width:min(92vw,420px);white-space:normal;text-align:center;line-height:1.45}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}.share-gate{position:absolute;inset:0;z-index:5;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(2,6,14,.55);backdrop-filter:blur(6px)}.share-gate.show{display:flex}.share-gate-card{text-align:center;max-width:340px;background:rgba(17,24,39,.92);border:1px solid #34435c;border-radius:16px;padding:22px 18px}.share-gate-card p{margin:0 0 14px;color:var(--muted);font-size:13px;line-height:1.55}.share-gate-card button{width:100%}.inspect-hint{position:absolute;left:50%;bottom:max(58px,calc(env(safe-area-inset-bottom) + 52px));transform:translateX(-50%) translateY(8px);opacity:0;pointer-events:none;z-index:4;max-width:min(92vw,360px);padding:10px 14px;border-radius:14px;background:rgba(4,9,18,.88);border:1px solid #334155;color:#d7e1ef;font-size:12px;line-height:1.5;text-align:center;transition:.2s}.inspect-hint.show{opacity:1;transform:translateX(-50%) translateY(0)}.inspect-hint strong{color:var(--accent);font-weight:700}.credit-link{display:none;position:absolute;right:12px;bottom:max(12px,env(safe-area-inset-bottom));z-index:4;pointer-events:auto;padding:8px 11px;border-radius:999px;background:rgba(7,12,22,.72);border:1px solid rgba(148,163,184,.28);backdrop-filter:blur(12px);color:#d7e1ef;font-size:12px;text-decoration:none}.credit-link:hover{border-color:rgba(125,211,252,.45);color:#fff}.body-viewer .sidebar{display:none}.body-viewer .app{grid-template-columns:1fr}.body-viewer .stage{height:100dvh;min-height:100dvh}.body-viewer .help-badge{display:none}.body-viewer .make-own{display:block}.body-viewer .credit-link{display:block}
+.editor{position:fixed;inset:0;z-index:20;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(2,6,14,.86)}.editor.open{display:flex}.editor-panel{width:min(560px,100%);max-height:94dvh;overflow:auto;background:#111827;border:1px solid #34435c;border-radius:16px;padding:14px}.editor-panel h2{margin:0 0 4px;font-size:17px}.editor-note{margin:0 0 12px;color:var(--muted);font-size:12px;line-height:1.5}.crop-wrap{position:relative;width:100%;aspect-ratio:1;background:#050810;border:1px solid #334155;border-radius:12px;overflow:hidden;touch-action:none}.crop-wrap canvas{display:block;width:100%;height:100%;touch-action:none}.crop-grid{position:absolute;inset:0;pointer-events:none;background:linear-gradient(to right,transparent 33.1%,rgba(255,255,255,.25) 33.2%,rgba(255,255,255,.25) 33.5%,transparent 33.6%,transparent 66.4%,rgba(255,255,255,.25) 66.5%,rgba(255,255,255,.25) 66.8%,transparent 66.9%),linear-gradient(to bottom,transparent 33.1%,rgba(255,255,255,.25) 33.2%,rgba(255,255,255,.25) 33.5%,transparent 33.6%,transparent 66.4%,rgba(255,255,255,.25) 66.5%,rgba(255,255,255,.25) 66.8%,transparent 66.9%)}.editor-actions{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}.editor-actions.two{grid-template-columns:1fr 1fr}.face{cursor:pointer}.face.dragging{cursor:grabbing}
+@media(max-width:760px){body{overflow:auto}.app{display:flex;flex-direction:column;height:auto;min-height:100dvh}.stage{order:1;height:55dvh;min-height:360px}.sidebar{order:2;border-right:0;border-top:1px solid var(--line);overflow:visible;padding-bottom:calc(24px + env(safe-area-inset-bottom))}.help-badge{display:none}.body-viewer .stage{order:1;height:100dvh;min-height:100dvh}.body-viewer .make-own{display:block}}
+.paste-gate{position:absolute;inset:0;z-index:7;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(2,6,14,.62);backdrop-filter:blur(6px)}.paste-gate.show{display:flex}.paste-card{width:min(520px,94vw);background:rgba(17,24,39,.95);border:1px solid #34435c;border-radius:18px;padding:18px}.paste-card h3{margin:0 0 8px;font-size:18px}.paste-card p{margin:0 0 10px;color:#c8d4e7;font-size:13px;line-height:1.6}.paste-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.paste-actions button{width:100%}.paste-actions .full{grid-column:1/-1}.paste-note{font-size:11px;color:var(--muted);margin-top:8px}
+html.boot-shared .sidebar{display:none}html.boot-shared .app{grid-template-columns:1fr}html.boot-shared .stage{height:100dvh;min-height:100dvh}html.boot-shared .help-badge{display:none}html.boot-shared .make-own{display:block}html.boot-shared .credit-link{display:block}
+</style>
+<script>
+if(location.hash.startsWith('#i=')||location.hash.startsWith('#paste'))document.documentElement.classList.add('boot-shared');
+</script>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar">
+<h1 id="titleMain">90 Days Cube</h1>
+<p class="lead" id="leadMain">画像を1枚ずつ（またはまとめて最大6枚）読み込み、展開図で並べ替えて立方体に貼ります。画像処理は端末内だけで行います。</p>
+<section class="section">
+<h2 id="h2Upload">1. 画像を配置</h2>
+<div class="upload"><label for="batchFiles" id="batchFilesLabel">画像を選択</label><input id="batchFiles" type="file" accept="image/*" multiple></div>
+<div class="net" id="net">
+<div class="face empty"></div><div class="face empty"></div>
+<div class="face" data-face="top" draggable="true"><img alt="上面"><span class="face-label">上</span></div>
+<div class="face empty"></div>
+<div class="face" data-face="back" draggable="true"><img alt="後面"><span class="face-label">後</span></div>
+<div class="face" data-face="right" draggable="true"><img alt="右面"><span class="face-label">右</span></div>
+<div class="face" data-face="front" draggable="true"><img alt="前面"><span class="face-label">前</span></div>
+<div class="face" data-face="left" draggable="true"><img alt="左面"><span class="face-label">左</span></div>
+<div class="face empty"></div><div class="face empty"></div>
+<div class="face" data-face="bottom" draggable="true"><img alt="下面"><span class="face-label">下</span></div>
+<div class="face empty"></div>
+</div>
+<div class="status" id="fileStatus">画像を1枚ずつ選択できます（最大6枚）。設定済みの画像は各面で差し替え可能です。</div>
+<div class="hint" id="hintUpload">空き面へ選択順に「上・左・前・右・後・下」へ入ります。6枚揃うと追加選択はできません。各面をタップして編集画面から画像を差し替えできます。ドラッグで面の入れ替えも可能です。</div>
+</section>
+<section class="section">
+<h2 id="h2Demo">2. キューブを解くデモ</h2>
+<button id="play" class="primary" style="width:100%">再生</button>
+<div class="row"><label for="speed" id="speedLabel">速度</label><input id="speed" type="range" min="0.2" max="2.5" step="0.05" value="0.8"><output id="speedOut">0.80×</output></div>
+<div class="hint" id="hintDemo">ランダムに崩したあと逆手順で解き、少し静止して再び始めます。ドラッグで向きを変え、ピンチ／ホイールで拡大縮小できます。「停止」で初期状態へ戻ります。</div>
+<div class="checks-row">
+<span class="checks-label" id="checksLabel">視点演出</span>
+<div class="checks">
+<label><input id="spin" type="checkbox" checked> <span id="spinLabel">回転</span></label>
+<label><input id="randomView" type="checkbox" checked> <span id="randomViewLabel">向き変化</span></label>
+</div>
+</div>
+</section>
+<section class="section"><h2 id="h2Export">3. 書き出し</h2><div class="grid2"><button id="snapshot">立方体PNG保存</button><button id="netSnapshot">展開図PNG保存</button></div><div class="hint" id="hintExport">保存専用です。書き出しは高解像度・太枠・角マーカー付きで、SNS圧縮後の判読を安定化します。</div></section>
+<section class="section"><h2 style="display:flex;align-items:center;justify-content:space-between;gap:10px"><span id="h2Share">4. 共有</span><span id="shareWarn" style="font-size:11px;color:var(--muted);font-weight:500">デリケートな画像の共有は避けてください。</span></h2><button id="randomNetCopy" class="primary" style="width:100%">① ランダム展開図をコピー</button><div class="hint" id="hintShareFlow" style="margin-top:8px">次に「② Xに投稿（URL付き）」を押し、投稿画面が開いたらコピー済みの展開図画像を貼り付けてから投稿してください。</div><button id="postToX" class="primary" style="width:100%;margin-top:8px">② Xに投稿（URL付き）</button><div id="privateShareBox" style="display:none;margin-top:8px"><button id="shareLink" style="width:100%">限定共有リンクをコピー（pastes.dev）</button><div class="hint" id="hintPrivateShare">起動オプション `?share=private`（または `?privateShare=1`）で表示される、身内向けの共有機能です。</div></div></section>
+<section class="section"><h2 id="h2Fullscreen">5. 全画面表示</h2><button id="fullscreen" style="width:100%">全画面</button><div class="hint" id="hintFullscreen">閲覧時に没入表示したい場合に使います。右上の⛶ボタンと同じ動作です。</div></section>
+<p class="lead" id="creditLead">90 Days Cube © 2026 Satoshi Endo (<a href="https://x.com/hortense667" target="_blank" rel="noopener noreferrer">https://x.com/hortense667</a>), CC BY-NC-SA 4.0 (<a href="https://creativecommons.org" target="_blank" rel="noopener noreferrer">https://creativecommons.org</a>)</p>
+</aside>
+<main class="stage" id="stage"><canvas id="viewport"></canvas><div class="topbar"><div class="badge help-badge" id="helpBadge">ドラッグ：回転　ピンチ／ホイール：拡大縮小</div><a class="make-own" id="makeOwn" href="./" target="_blank" rel="noopener"><strong id="makeOwnStrong">自分でもキューブを作れます</strong><span id="makeOwnSpan">90 Days Cube を開く →</span></a><div class="top-actions"><button id="topPlay">▶</button><button id="topReset">↺</button><button id="topFs" title="全画面">⛶</button></div></div><div class="inspect-hint" id="inspectHint">解けました。<strong>ドラッグ</strong>で向きを変え、<strong>ピンチ</strong>で拡大縮小できます。<br>タップで再開</div><a class="credit-link" id="creditLink" href="https://x.com/hortense667" target="_blank" rel="noopener noreferrer" title="X profile">@hortense667</a><div class="share-gate" id="shareGate"><div class="share-gate-card"><p id="shareGateText">共有されたキューブデモです。<br>タップすると全画面で再生します。</p><button id="shareGateBtn" class="primary" type="button">全画面で見る</button></div></div><div class="paste-gate" id="pasteGate"><div class="paste-card"><h3 id="pasteTitle">Cubeを解いて画像を見る</h3><p id="pasteDesc"><strong>Ctrl+V</strong> で貼り付けるか、「クリップボードから読み取り」を押してください。</p><div class="paste-actions"><button id="pasteRead" type="button">クリップボードから読み取り</button><button id="pasteClose" type="button" class="full">閉じる</button></div><div class="paste-note" id="pasteNote">※ 画像読み取りはHTTPS/localhostでのみ使える場合があります。</div></div></div><div class="toast" id="toast"></div></main>
+</div>
+<div class="editor" id="imageEditor" aria-hidden="true">
+  <div class="editor-panel" role="dialog" aria-modal="true" aria-labelledby="editorTitle">
+    <h2 id="editorTitle">画像を面に合わせる</h2>
+    <p class="editor-note" id="editorNote">画像をドラッグして位置を調整します。スライダーで拡大・縮小できます。</p>
+    <div class="crop-wrap" id="cropWrap"><canvas id="cropCanvas" width="900" height="900"></canvas><div class="crop-grid"></div></div>
+    <div class="row"><label for="cropZoom" id="cropZoomLabel">拡大率</label><input id="cropZoom" type="range" min="1" max="5" step="0.01" value="1"><output id="cropZoomOut">1.00×</output></div>
+    <div class="editor-actions"><button id="cropLeft" type="button">↺ 90°</button><button id="cropReset" type="button">中央に戻す</button><button id="cropRight" type="button">90° ↻</button></div>
+    <div class="editor-actions two"><button id="replaceImage" type="button">画像を差し替え</button><button id="cropApply" type="button" class="primary">適用</button></div>
+    <button id="cropCancel" type="button" style="width:100%;margin-top:8px">キャンセル</button>
+    <input id="replaceFile" type="file" accept="image/*" hidden>
+  </div>
+</div>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.167.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.167.1/examples/jsm/"}}</script>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+const $=s=>document.querySelector(s);const canvas=$('#viewport'),stage=$('#stage');
+const STARTUP_PARAMS=new URLSearchParams(location.search);
+const IS_PASTE_SHARE_HASH=(location.hash||'').startsWith('#i=');
+const IS_MOBILE_SHARE_MODE=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)||((navigator.maxTouchPoints||0)>0&&Math.min(screen.width,screen.height)<=1024);
+let currentLang=((STARTUP_PARAMS.get('lang')||'').toLowerCase().startsWith('en'))?'en':'ja';
+const FACE_LABELS={ja:{top:'上',left:'左',front:'前',right:'右',back:'後',bottom:'下'},en:{top:'Top',left:'Left',front:'Front',right:'Right',back:'Back',bottom:'Bottom'}};
+const I18N={
+  ja:{
+    appTitle:'90 Days Cube',
+    leadMain:'画像を1枚ずつ（またはまとめて最大6枚）読み込み、展開図で並べ替えて立方体に貼ります。画像処理は端末内だけで行います。',
+    h2Upload:'1. 画像を配置',h2Demo:'2. キューブを解くデモ',h2Export:'3. 書き出し',h2Share:'4. 共有',h2Fullscreen:'5. 全画面表示',
+    checksLabel:'視点演出',speedLabel:'速度',spinLabel:'回転',randomViewLabel:'向き変化',
+    play:'再生',stop:'停止',fullscreen:'全画面',snapshot:'立方体PNG保存',netSnapshot:'展開図PNG保存',
+    randomNetCopy:'① ランダム展開図をコピー',postToX:'② Xに投稿（URL付き）',randomNetCopyMobile:'① 共有テキストをコピー',postToXMobile:'② X投稿用に画像を共有',shareGateBtn:'全画面で見る',
+    batchFilesLabel:'画像を選択',
+    hintUpload:'空き面へ選択順に「上・左・前・右・後・下」へ入ります。6枚揃うと追加選択はできません。各面をタップして編集画面から画像を差し替えできます。ドラッグで面の入れ替えも可能です。',
+    hintDemo:'ランダムに崩したあと逆手順で解き、少し静止して再び始めます。ドラッグで向きを変え、ピンチ／ホイールで拡大縮小できます。「停止」で初期状態へ戻ります。',
+    hintExport:'保存専用です。書き出しは高解像度・太枠・角マーカー付きで、SNS圧縮後の判読を安定化します。',
+    hintShareFlow:'次に「② Xに投稿（URL付き）」を押し、投稿画面が開いたらコピー済みの展開図画像を貼り付けてから投稿してください。',
+    hintShareFlowMobile:'次に「② X投稿用に画像を共有」を押してX投稿画面を開き、本文へ先ほどコピーした共有テキストを貼り付けて投稿してください。',
+    hintFullscreen:'閲覧時に没入表示したい場合に使います。右上の⛶ボタンと同じ動作です。',
+    shareWarn:'デリケートな画像の共有は避けてください。',
+    helpBadge:'ドラッグ：回転　ピンチ／ホイール：拡大縮小',
+    makeOwnStrong:'自分でもキューブを作れます',makeOwnSpan:'90 Days Cube を開く →',
+    inspectHint:'解けました。<strong>ドラッグ</strong>で向きを変え、<strong>ピンチ</strong>で拡大縮小できます。<br>タップで再開',
+    shareGateText:'共有されたキューブデモです。<br>タップすると全画面で再生します。',
+    pasteTitle:'Cubeを解いて画像を見る',pasteDesc:'<strong>Ctrl+V</strong> で貼り付けるか、「クリップボードから読み取り」を押してください。',pasteNote:'※ 画像読み取りはHTTPS/localhostでのみ使える場合があります。',
+    pasteRead:'クリップボードから読み取り',pasteClose:'閉じる',privateShareBtn:'限定共有リンクをコピー（pastes.dev）',hintPrivateShare:'起動オプション `?share=private`（または `?privateShare=1`）で表示される、身内向けの共有機能です。',
+    editorTitleDefault:'画像を面に合わせる',editorNote:'画像をドラッグして位置を調整します。スライダーで拡大・縮小できます。',cropZoomLabel:'拡大率',cropReset:'中央に戻す',replaceImage:'画像を差し替え',cropApply:'適用',cropCancel:'キャンセル',
+    xPostGuide:'添付画像をコピーして、Viewerを立ち上げたら「クリップボードから読み取り」を押してください。',
+    xPostGuideMobile:'添付画像をコピー（PCで閲覧する場合は一度拡大画像にしてからコピー）して、Viewerを立ち上げたら「クリップボードから読み取り」を押してください。'
+  },
+  en:{
+    appTitle:'90 Days Cube',
+    leadMain:'Load up to 6 images, arrange them on the net, and map them onto a cube. All image processing runs locally in your browser.',
+    h2Upload:'1. Place Images',h2Demo:'2. Solve Demo',h2Export:'3. Export',h2Share:'4. Share',h2Fullscreen:'5. Fullscreen',
+    checksLabel:'View Effects',speedLabel:'Speed',spinLabel:'Spin',randomViewLabel:'Orientation Shift',
+    play:'Play',stop:'Stop',fullscreen:'Fullscreen',snapshot:'Save Cube PNG',netSnapshot:'Save Net PNG',
+    randomNetCopy:'1) Copy Randomized Net',postToX:'2) Post to X (with URL)',randomNetCopyMobile:'1) Copy Share Text',postToXMobile:'2) Share Image for X Post',shareGateBtn:'View Fullscreen',
+    batchFilesLabel:'Select Images',
+    hintUpload:'Images fill empty faces in this order: Top, Left, Front, Right, Back, Bottom. Up to 6 images. Tap a face to edit, drag to swap faces.',
+    hintDemo:'The cube is scrambled, solved in reverse, then pauses and restarts. Drag to rotate the view, pinch/wheel to zoom. "Stop" resets the state.',
+    hintExport:'Export only. Images are saved in high resolution with thick borders and corner markers for better readability after SNS compression.',
+    hintShareFlow:'Then press "2) Post to X (with URL)". When the post editor opens, paste the copied net image before posting.',
+    hintShareFlowMobile:'Then press "2) Share Image for X Post" to open the X post flow. Paste the copied share text into the post body before posting.',
+    hintFullscreen:'Use this for immersive viewing. Same behavior as the top-right ⛶ button.',
+    shareWarn:'Avoid sharing sensitive images.',
+    helpBadge:'Drag: Rotate  Pinch/Wheel: Zoom',
+    makeOwnStrong:'Create your own cube',makeOwnSpan:'Open 90 Days Cube →',
+    inspectHint:'Solved. Drag to rotate, pinch to zoom.<br>Tap to resume',
+    shareGateText:'This is a shared cube demo.<br>Tap to start in fullscreen.',
+    pasteTitle:'Solve Cube and View Image',pasteDesc:'Paste with <strong>Ctrl+V</strong>, or press "Read from Clipboard".',pasteNote:'* Clipboard image read may require HTTPS/localhost.',
+    pasteRead:'Read from Clipboard',pasteClose:'Close',privateShareBtn:'Copy Private Share Link (pastes.dev)',hintPrivateShare:'A private sharing option shown only with startup option `?share=private` (or `?privateShare=1`).',
+    editorTitleDefault:'Fit Image to Face',editorNote:'Drag to adjust position. Use the slider to zoom in or out.',cropZoomLabel:'Zoom',cropReset:'Recenter',replaceImage:'Replace Image',cropApply:'Apply',cropCancel:'Cancel',
+    xPostGuide:'Copy and attach the image. After opening Viewer, press "Read from Clipboard".',
+    xPostGuideMobile:'Copy and attach the image. After opening Viewer, press "Read from Clipboard".\nFor desktop viewing, opening the attached image once in enlarged view before copying/pasting usually gives a cleaner result.'
+  }
+};
+const t=(k)=>I18N[currentLang]?.[k]??I18N.ja[k]??k;
+const tr=(ja,en)=>currentLang==='en'?en:ja;
+function faceLabel(face){return FACE_LABELS[currentLang]?.[face]||FACE_LABELS.ja[face]}
+function setLanguage(lang){
+  currentLang=(lang==='en')?'en':'ja';
+  applyLocaleUI();
+  updateBatchPicker();
+  statusMessage();
+}
+function baseUrlWithLang(){
+  const u=new URL(location.href);u.hash='';
+  if(currentLang==='en')u.searchParams.set('lang','en');else u.searchParams.delete('lang');
+  return u.toString();
+}
+function applyLocaleUI(){
+  document.documentElement.lang=currentLang==='en'?'en':'ja';
+  document.title=t('appTitle');
+  $('#leadMain').textContent=t('leadMain');$('#h2Upload').textContent=t('h2Upload');$('#h2Demo').textContent=t('h2Demo');$('#h2Export').textContent=t('h2Export');$('#h2Share').textContent=t('h2Share');$('#h2Fullscreen').textContent=t('h2Fullscreen');
+  $('#checksLabel').textContent=t('checksLabel');$('#speedLabel').textContent=t('speedLabel');$('#spinLabel').textContent=t('spinLabel');$('#randomViewLabel').textContent=t('randomViewLabel');
+  $('#play').textContent=t('play');$('#fullscreen').textContent=t('fullscreen');$('#snapshot').textContent=t('snapshot');$('#netSnapshot').textContent=t('netSnapshot');$('#randomNetCopy').textContent=IS_MOBILE_SHARE_MODE?t('randomNetCopyMobile'):t('randomNetCopy');$('#postToX').textContent=IS_MOBILE_SHARE_MODE?t('postToXMobile'):t('postToX');
+  if(!$('#batchFiles').disabled)$('#batchFilesLabel').textContent=t('batchFilesLabel');
+  $('#hintUpload').textContent=t('hintUpload');$('#hintDemo').textContent=t('hintDemo');$('#hintExport').textContent=t('hintExport');$('#hintShareFlow').textContent=IS_MOBILE_SHARE_MODE?t('hintShareFlowMobile'):t('hintShareFlow');$('#hintFullscreen').textContent=t('hintFullscreen');$('#shareWarn').textContent=t('shareWarn');
+  $('#helpBadge').textContent=t('helpBadge');$('#makeOwnStrong').textContent=t('makeOwnStrong');$('#makeOwnSpan').textContent=t('makeOwnSpan');$('#inspectHint').innerHTML=t('inspectHint');
+  $('#shareGateText').innerHTML=t('shareGateText');$('#shareGateBtn').textContent=t('shareGateBtn');
+  $('#pasteTitle').textContent=t('pasteTitle');$('#pasteDesc').innerHTML=t('pasteDesc');$('#pasteRead').textContent=t('pasteRead');$('#pasteClose').textContent=t('pasteClose');$('#pasteNote').textContent=t('pasteNote');
+  if($('#shareLink'))$('#shareLink').textContent=t('privateShareBtn');
+  if($('#hintPrivateShare'))$('#hintPrivateShare').textContent=t('hintPrivateShare');
+  $('#editorTitle').textContent=t('editorTitleDefault');
+  $('#editorNote').textContent=t('editorNote');$('#cropZoomLabel').textContent=t('cropZoomLabel');$('#cropReset').textContent=t('cropReset');$('#replaceImage').textContent=t('replaceImage');$('#cropApply').textContent=t('cropApply');$('#cropCancel').textContent=t('cropCancel');
+  $('#topFs').title=t('fullscreen');
+  document.querySelectorAll('.face[data-face]').forEach(el=>{const f=el.dataset.face;const label=faceLabel(f);const s=el.querySelector('.face-label');const img=el.querySelector('img');if(s)s.textContent=label;if(img)img.alt=currentLang==='en'?`${label} face`:`${label}面`});
+}
+applyLocaleUI();
+const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true,preserveDrawingBuffer:true});renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.05;
+const scene=new THREE.Scene(),camera=new THREE.PerspectiveCamera(38,1,.1,100),controls=new OrbitControls(camera,canvas);controls.enableDamping=true;controls.dampingFactor=.07;controls.enablePan=false;controls.minDistance=2.4;controls.maxDistance=8;
+scene.add(new THREE.HemisphereLight(0xffffff,0x263247,2.3));const key=new THREE.DirectionalLight(0xffffff,2.8);key.position.set(4,5,6);scene.add(key);const rim=new THREE.DirectionalLight(0x8ec5ff,1.4);rim.position.set(-5,1,-4);scene.add(rim);
+const root=new THREE.Group();scene.add(root);const cubieRoot=new THREE.Group();root.add(cubieRoot);
+const faceNames=['top','left','front','right','back','bottom'],matOrder=['right','left','top','bottom','front','back'];const colors={front:'#315c7b',back:'#65527a',left:'#386c65',right:'#765341',top:'#66653a',bottom:'#70475b'};const slots={};for(const f of faceNames)slots[f]={source:null,rotation:0,url:null,name:'',zoom:1,offsetX:0,offsetY:0};
+function placeholder(face){const c=document.createElement('canvas');c.width=c.height=900;const x=c.getContext('2d');x.fillStyle=colors[face];x.fillRect(0,0,900,900);x.strokeStyle='rgba(255,255,255,.12)';for(let i=0;i<=9;i++){x.beginPath();x.moveTo(i*100,0);x.lineTo(i*100,900);x.stroke();x.beginPath();x.moveTo(0,i*100);x.lineTo(900,i*100);x.stroke()}x.fillStyle='white';x.textAlign='center';x.textBaseline='middle';x.font='700 110px system-ui';x.fillText(faceLabel(face),450,430);return c}
+function processedCanvas(face){
+  const slot=slots[face],src=slot.source||placeholder(face),sw=src.naturalWidth||src.width,sh=src.naturalHeight||src.height;
+  const out=Math.min(1920,Math.max(900,Math.min(Math.max(sw,sh),1920))),c=document.createElement('canvas');c.width=c.height=out;
+  const x=c.getContext('2d');x.imageSmoothingEnabled=true;x.imageSmoothingQuality='high';x.fillStyle='#111318';x.fillRect(0,0,out,out);
+  const turns=((slot.rotation||0)%4+4)%4,rot=turns*Math.PI/2,quarter=turns%2===1;
+  const rw=quarter?sh:sw,rh=quarter?sw:sh,base=Math.max(out/rw,out/rh),scale=base*(slot.zoom||1);
+  x.translate(out/2+(slot.offsetX||0)*out,out/2+(slot.offsetY||0)*out);x.rotate(rot);x.scale(scale,scale);x.drawImage(src,-sw/2,-sh/2);
+  return c;
+}
+function tileTexture(face,col,row){const src=processedCanvas(face),s=src.width/3,c=document.createElement('canvas');c.width=c.height=512;const x=c.getContext('2d');x.drawImage(src,col*s,row*s,s,s,0,0,512,512);const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;t.anisotropy=Math.min(8,renderer.capabilities.getMaxAnisotropy());return t}
+const cubieGap=.0175,cubieSize=(2-cubieGap*2)/3,cubieStep=cubieSize+cubieGap;
+const darkMat=()=>new THREE.MeshStandardMaterial({color:0x111318,roughness:.8,metalness:.02});
+const imageMat=(face,col,row)=>new THREE.MeshBasicMaterial({map:tileTexture(face,col,row),toneMapped:false,side:THREE.DoubleSide,depthTest:true,depthWrite:true});
+function addImagePlane(cubie,face,col,row,size){
+  const plane=new THREE.Mesh(new THREE.PlaneGeometry(size*.999,size*.999),imageMat(face,col,row));
+  const offset=size/2+.002;
+  if(face==='right'){plane.position.x=offset;plane.rotation.y=Math.PI/2}
+  else if(face==='left'){plane.position.x=-offset;plane.rotation.y=-Math.PI/2}
+  else if(face==='top'){plane.position.y=offset;plane.rotation.x=-Math.PI/2}
+  else if(face==='bottom'){plane.position.y=-offset;plane.rotation.x=Math.PI/2}
+  else if(face==='front'){plane.position.z=offset}
+  else if(face==='back'){plane.position.z=-offset;plane.rotation.y=Math.PI}
+  plane.renderOrder=2;
+  cubie.add(plane);
+}
+function clearCubies(){while(cubieRoot.children.length){const o=cubieRoot.children.pop();o.traverse(n=>{n.geometry?.dispose?.();if(Array.isArray(n.material))n.material.forEach(m=>{m.map?.dispose?.();m.dispose?.()});else{n.material?.map?.dispose?.();n.material?.dispose?.()}})}}
+function rebuildCube(){
+  clearCubies();
+  const size=cubieSize;
+  for(let x=-1;x<=1;x++)for(let y=-1;y<=1;y++)for(let z=-1;z<=1;z++){
+    const mesh=new THREE.Mesh(new THREE.BoxGeometry(size,size,size),darkMat());
+    mesh.position.set(x*cubieStep,y*cubieStep,z*cubieStep);
+    mesh.userData.coord=new THREE.Vector3(x,y,z);
+    // 画像は初期状態で外側に露出している面だけに貼る。
+    // 平面は小立方体の子要素なので、ルービック回転中も同じ面に固定されたまま移動する。
+    if(x===1) addImagePlane(mesh,'right',1-z,1-y,size);
+    if(x===-1) addImagePlane(mesh,'left',z+1,1-y,size);
+    if(y===1) addImagePlane(mesh,'top',x+1,z+1,size);
+    if(y===-1) addImagePlane(mesh,'bottom',x+1,1-z,size);
+    if(z===1) addImagePlane(mesh,'front',x+1,1-y,size);
+    if(z===-1) addImagePlane(mesh,'back',1-x,1-y,size);
+    cubieRoot.add(mesh);
+  }
+}
+rebuildCube();
+function resize(){const r=stage.getBoundingClientRect();renderer.setSize(r.width,r.height,false);camera.aspect=r.width/r.height;camera.updateProjectionMatrix()}new ResizeObserver(resize).observe(stage);resize();
+let orientTween=null,randomTimer=0,spinAxis={x:0,y:1,z:0},spinSpeed=.35;
+const VIEWER_DIST=5;
+function setView(yaw=28,pitch=-18,dist=5){const yr=THREE.MathUtils.degToRad(yaw),pr=THREE.MathUtils.degToRad(pitch);camera.position.set(dist*Math.sin(yr)*Math.cos(pr),dist*Math.sin(-pr),dist*Math.cos(yr)*Math.cos(pr));camera.lookAt(0,0,0);controls.target.set(0,0,0);controls.update()}
+function resetView(){setView(28,-18,document.body.classList.contains('body-viewer')?VIEWER_DIST:5)}
+function resetSpinAxis(){spinAxis={x:0,y:1,z:0};spinSpeed=.35}
+function pickSpinDirection(){
+  const choices=[
+    {x:0,y:1,z:0},{x:0,y:-1,z:0},
+    {x:1,y:0,z:0},{x:-1,y:0,z:0},
+    {x:0,y:0,z:1},{x:0,y:0,z:-1},
+    {x:.7,y:.7,z:0},{x:-.7,y:.7,z:0},{x:0,y:.7,z:.7},{x:0,y:.7,z:-.7}
+  ];
+  const c=choices[Math.floor(Math.random()*choices.length)];
+  const len=Math.hypot(c.x,c.y,c.z)||1;
+  spinAxis={x:c.x/len,y:c.y/len,z:c.z/len};
+  spinSpeed=.22+.28*Math.random();
+}
+function startRandomOrient(){
+  const from={x:root.rotation.x,y:root.rotation.y,z:root.rotation.z};
+  const to={x:(Math.random()-.5)*.7,y:from.y+(Math.random()-.5)*Math.PI,z:(Math.random()-.5)*.5};
+  orientTween={from,to,t:0,dur:2.2};
+  pickSpinDirection();
+}
+function updateViewExtras(dt){
+  if(viewerInspect)return;
+  if($('#randomView').checked){
+    randomTimer+=dt;
+    if(!orientTween&&randomTimer>7){randomTimer=0;startRandomOrient()}
+  }else{randomTimer=0;orientTween=null;resetSpinAxis()}
+  if(orientTween){
+    orientTween.t+=dt;const u=Math.min(1,orientTween.t/orientTween.dur),e=u*u*(3-2*u);
+    root.rotation.x=orientTween.from.x+(orientTween.to.x-orientTween.from.x)*e;
+    root.rotation.y=orientTween.from.y+(orientTween.to.y-orientTween.from.y)*e;
+    root.rotation.z=orientTween.from.z+(orientTween.to.z-orientTween.from.z)*e;
+    if(u>=1)orientTween=null;
+  }else if($('#spin').checked){
+    root.rotation.x+=spinAxis.x*dt*spinSpeed;
+    root.rotation.y+=spinAxis.y*dt*spinSpeed;
+    root.rotation.z+=spinAxis.z*dt*spinSpeed;
+  }
+}
+setView();$('#speed').addEventListener('input',e=>$('#speedOut').textContent=(+e.target.value).toFixed(2)+'×');$('#topReset').onclick=()=>resetView();
+if($('#randomView').checked)pickSpinDirection();
+$('#randomView').addEventListener('change',()=>{randomTimer=0;if($('#randomView').checked)pickSpinDirection();else{orientTween=null;resetSpinAxis()}});
+function filledCount(){return faceNames.filter(f=>slots[f].source).length}
+function emptyFaces(){return faceNames.filter(f=>!slots[f].source)}
+function updateBatchPicker(){
+  const n=filledCount(),full=n>=6,input=$('#batchFiles'),label=$('#batchFilesLabel');
+  input.disabled=full;
+  label.style.opacity=full?.5:1;label.style.pointerEvents=full?'none':'auto';label.style.cursor=full?'not-allowed':'pointer';
+  label.textContent=full?(currentLang==='en'?'6 images set':'6枚設定済み'):n?(currentLang==='en'?`Select Images (${6-n} left)`:`画像を選択（残り${6-n}枚）`):t('batchFilesLabel');
+}
+function statusMessage(extra=''){
+  const n=filledCount();
+  const base=currentLang==='en'
+    ?(n>=6?'All 6 images are set. You can replace each face image.':n?`${n}/6 images are set. You can continue selecting images and replace each face image.`:'Select images one by one (up to 6). You can replace each face image anytime.')
+    :(n>=6
+      ?`6枚を配置しました。設定した画像は各面で差し替え可能です。`
+      :n
+        ?`${n}/6 枚を配置しました。続けて選択できます。設定した画像は各面で差し替え可能です。`
+        :`画像を1枚ずつ選択できます（最大6枚）。設定済みの画像は各面で差し替え可能です。`);
+  $('#fileStatus').textContent=extra?`${extra}${base}`:base;
+}
+function refreshNet(){for(const f of faceNames){const el=document.querySelector(`[data-face="${f}"]`),img=el.querySelector('img');if(slots[f].source){img.src=processedCanvas(f).toDataURL('image/jpeg',.9);el.classList.add('has')}else{img.removeAttribute('src');el.classList.remove('has')}}rebuildCube();updateBatchPicker();statusMessage()}
+async function loadFiles(files){
+  const input=$('#batchFiles');
+  if(!files.length){input.value='';return}
+  const empties=emptyFaces();
+  if(!empties.length){
+    $('#fileStatus').textContent=tr('すでに6枚設定済みです。これ以上は選択できません。設定した画像は各面で差し替え可能です。','All 6 images are already set. No additional images can be selected. You can still replace each face image.');
+    toast(tr('6枚設定済みです。各面で差し替えできます','All 6 images are set. You can replace each face image.'));
+    input.value='';
+    return;
+  }
+  let overMsg='';
+  if(files.length>6){
+    overMsg=tr('6枚以上が指定されたため、6枚のみ設定します。','More than 6 images were selected, so only the first 6 will be used. ');
+    toast(tr('6枚以上のため、6枚のみ設定します','More than 6 images selected, using first 6 only.'));
+  }else if(files.length>empties.length){
+    overMsg=tr(`空きは${empties.length}枚のため、先頭の${empties.length}枚のみ設定します。`,`Only ${empties.length} empty face(s) left, so only the first ${empties.length} image(s) will be used. `);
+    toast(tr(`空きは${empties.length}枚のため、${empties.length}枚のみ設定します`,`Only ${empties.length} image(s) used (remaining empty faces: ${empties.length}).`));
+  }
+  const take=files.slice(0,Math.min(files.length,empties.length,6));
+  const targets=empties.slice(0,take.length);
+  const loaded=[];
+  for(const file of take){
+    try{
+      const url=URL.createObjectURL(file),im=new Image();await new Promise((res,rej)=>{im.onload=res;im.onerror=rej;im.src=url});
+      if(!im.naturalWidth||!im.naturalHeight)throw new Error(currentLang==='en'?`${file.name}: Could not get image dimensions`:`${file.name}: サイズを取得できません`);
+      loaded.push({im,url,name:file.name,w:im.naturalWidth,h:im.naturalHeight});
+    }catch(err){loaded.forEach(v=>URL.revokeObjectURL(v.url));$('#fileStatus').textContent=tr(`読み込めません：${err.message}`,`Failed to load image: ${err.message}`);toast(tr('画像を読み込めませんでした','Failed to load image.'));input.value='';return}
+  }
+  targets.forEach((f,i)=>{if(slots[f].url)URL.revokeObjectURL(slots[f].url);slots[f]={source:loaded[i].im,rotation:0,url:loaded[i].url,name:loaded[i].name,zoom:1,offsetX:0,offsetY:0}});
+  refreshNet();
+  if(overMsg)statusMessage(overMsg);
+  else toast(currentLang==='en'?(loaded.length===1?`Set 1 image to ${faceLabel(targets[0])} face`:`Set ${loaded.length} images`):(loaded.length===1?`1枚を${faceLabel(targets[0])}面に設定しました`:`${loaded.length}枚を設定しました`));
+  input.value='';
+}
+$('#batchFiles').addEventListener('change',e=>loadFiles([...e.target.files]));
+updateBatchPicker();
+statusMessage();
+function swapFaces(a,b){const t=slots[a];slots[a]=slots[b];slots[b]=t;refreshNet();toast(currentLang==='en'?`Swapped ${faceLabel(a)} and ${faceLabel(b)} faces`:`${faceLabel(a)}面と${faceLabel(b)}面を入れ替えました`)}
+let dragFace=null,pointerDrag=null;
+document.querySelectorAll('.face[data-face]').forEach(el=>{
+  const f=el.dataset.face;
+  el.addEventListener('dragstart',e=>{dragFace=f;el.classList.add('dragging');e.dataTransfer.effectAllowed='move'});
+  el.addEventListener('dragend',()=>{dragFace=null;el.classList.remove('dragging');document.querySelectorAll('.face').forEach(x=>x.classList.remove('over'))});
+  el.addEventListener('dragover',e=>{e.preventDefault();el.classList.add('over')});el.addEventListener('dragleave',()=>el.classList.remove('over'));
+  el.addEventListener('drop',e=>{e.preventDefault();el.classList.remove('over');if(dragFace&&dragFace!==f)swapFaces(dragFace,f)});
+  el.addEventListener('pointerdown',e=>{pointerDrag={face:f,id:e.pointerId,startX:e.clientX,startY:e.clientY,moved:false};el.setPointerCapture(e.pointerId)});
+  el.addEventListener('pointermove',e=>{if(pointerDrag?.id!==e.pointerId)return;if(Math.hypot(e.clientX-pointerDrag.startX,e.clientY-pointerDrag.startY)>10){pointerDrag.moved=true;el.classList.add('dragging')}});
+  el.addEventListener('pointerup',e=>{if(pointerDrag?.id!==e.pointerId)return;el.classList.remove('dragging');const target=document.elementFromPoint(e.clientX,e.clientY)?.closest('.face[data-face]');if(pointerDrag.moved&&target&&target.dataset.face!==pointerDrag.face)swapFaces(pointerDrag.face,target.dataset.face);else if(!pointerDrag.moved&&slots[f].source)openEditor(f);pointerDrag=null});
+});
+
+let editingFace=null,editState=null,editorDrag=null,pinchStart=null;
+const editor=$('#imageEditor'),cropCanvas=$('#cropCanvas'),cropCtx=cropCanvas.getContext('2d');
+function openEditor(face){
+  editingFace=face;const slot=slots[face];editState={zoom:slot.zoom||1,offsetX:slot.offsetX||0,offsetY:slot.offsetY||0,rotation:slot.rotation||0,source:slot.source,url:slot.url,name:slot.name};
+  $('#editorTitle').textContent=currentLang==='en'?`Adjust ${faceLabel(face)} Face Image`:`${faceLabel(face)}面の画像を調整`;$('#cropZoom').value=editState.zoom;$('#cropZoomOut').textContent=editState.zoom.toFixed(2)+'×';editor.classList.add('open');editor.setAttribute('aria-hidden','false');drawEditor();
+}
+function closeEditor(){editor.classList.remove('open');editor.setAttribute('aria-hidden','true');editingFace=null;editorDrag=null;pinchStart=null}
+function drawEditor(){
+  if(!editingFace||!editState?.source)return;const src=editState.source,sw=src.naturalWidth||src.width,sh=src.naturalHeight||src.height,W=cropCanvas.width,H=cropCanvas.height;
+  cropCtx.setTransform(1,0,0,1,0,0);cropCtx.clearRect(0,0,W,H);cropCtx.fillStyle='#111318';cropCtx.fillRect(0,0,W,H);
+  const turns=((editState.rotation||0)%4+4)%4,quarter=turns%2===1,rw=quarter?sh:sw,rh=quarter?sw:sh,base=Math.max(W/rw,H/rh),scale=base*editState.zoom;
+  cropCtx.translate(W/2+editState.offsetX*W,H/2+editState.offsetY*H);cropCtx.rotate(turns*Math.PI/2);cropCtx.scale(scale,scale);cropCtx.imageSmoothingEnabled=true;cropCtx.imageSmoothingQuality='high';cropCtx.drawImage(src,-sw/2,-sh/2);
+}
+$('#cropZoom').addEventListener('input',e=>{editState.zoom=+e.target.value;$('#cropZoomOut').textContent=editState.zoom.toFixed(2)+'×';drawEditor()});
+$('#cropLeft').onclick=()=>{editState.rotation=(editState.rotation+3)%4;drawEditor()};$('#cropRight').onclick=()=>{editState.rotation=(editState.rotation+1)%4;drawEditor()};
+$('#cropReset').onclick=()=>{editState.zoom=1;editState.offsetX=0;editState.offsetY=0;$('#cropZoom').value=1;$('#cropZoomOut').textContent='1.00×';drawEditor()};
+$('#cropCancel').onclick=()=>{const original=slots[editingFace];if(editState?.url&&editState.url!==original.url)URL.revokeObjectURL(editState.url);closeEditor()};
+$('#cropApply').onclick=()=>{const slot=slots[editingFace];if(slot.url&&slot.url!==editState.url)URL.revokeObjectURL(slot.url);Object.assign(slot,editState);closeEditor();refreshNet()};
+$('#replaceImage').onclick=()=>{$('#replaceFile').value='';$('#replaceFile').click()};
+$('#replaceFile').addEventListener('change',async e=>{const file=e.target.files?.[0];if(!file||!editingFace)return;let url;try{url=URL.createObjectURL(file);const im=new Image();await new Promise((res,rej)=>{im.onload=res;im.onerror=rej;im.src=url});if(!im.naturalWidth||!im.naturalHeight)throw new Error(tr('画像サイズを取得できません','Could not read image size'));if(editState.url&&editState.url!==slots[editingFace].url)URL.revokeObjectURL(editState.url);editState.source=im;editState.url=url;editState.name=file.name;editState.zoom=1;editState.offsetX=0;editState.offsetY=0;editState.rotation=0;$('#cropZoom').value=1;$('#cropZoomOut').textContent='1.00×';drawEditor()}catch(err){if(url)URL.revokeObjectURL(url);toast(tr('画像を差し替えできませんでした','Failed to replace image.'))}});
+const cropWrap=$('#cropWrap');
+cropWrap.addEventListener('pointerdown',e=>{cropWrap.setPointerCapture(e.pointerId);if(e.pointerType==='touch'&&e.isPrimary===false)return;editorDrag={id:e.pointerId,x:e.clientX,y:e.clientY,ox:editState.offsetX,oy:editState.offsetY}});
+cropWrap.addEventListener('pointermove',e=>{if(!editorDrag||editorDrag.id!==e.pointerId)return;const r=cropWrap.getBoundingClientRect();editState.offsetX=editorDrag.ox+(e.clientX-editorDrag.x)/r.width;editState.offsetY=editorDrag.oy+(e.clientY-editorDrag.y)/r.height;drawEditor()});
+cropWrap.addEventListener('pointerup',e=>{if(editorDrag?.id===e.pointerId)editorDrag=null});cropWrap.addEventListener('pointercancel',()=>editorDrag=null);
+cropWrap.addEventListener('wheel',e=>{e.preventDefault();editState.zoom=Math.max(1,Math.min(5,editState.zoom*Math.exp(-e.deltaY*.001)));$('#cropZoom').value=editState.zoom;$('#cropZoomOut').textContent=editState.zoom.toFixed(2)+'×';drawEditor()},{passive:false});
+editor.addEventListener('pointerdown',e=>{if(e.target===editor)closeEditor()});
+
+let playing=false,elapsed=0,last=performance.now(),showcaseIndex=0,rubikQueue=[],rubikHistory=[],activeMove=null,rubikPhase='scramble',rubikPhaseTime=0;
+let viewerInspect=false,inspectPtrs=new Map();
+function isViewerMode(){return document.body.classList.contains('body-viewer')}
+function enterViewerInspect(){
+  if(viewerInspect)return;
+  viewerInspect=true;orientTween=null;inspectPtrs.clear();
+  $('#inspectHint').classList.add('show');
+}
+function exitViewerInspect(){
+  viewerInspect=false;inspectPtrs.clear();
+  $('#inspectHint').classList.remove('show');
+}
+function resumeViewerDemo(){
+  if(!playing)return;
+  exitViewerInspect();
+  rebuildCube();prepareRubik();
+}
+function resetObject(){playing=false;exitViewerInspect();if(!$('#spin').checked&&!$('#randomView').checked)root.rotation.set(0,0,0);rebuildCube();rubikQueue=[];rubikHistory=[];activeMove=null;rubikPhase='scramble';rubikPhaseTime=0;elapsed=0;orientTween=null;randomTimer=0;$('#play').textContent=t('play');$('#topPlay').textContent='▶'}
+function setPlaying(v){if(!v){resetObject();return}playing=true;exitViewerInspect();$('#play').textContent=t('stop');$('#topPlay').textContent='❚❚';elapsed=0;prepareRubik()}
+$('#play').onclick=$('#topPlay').onclick=()=>setPlaying(!playing);
+function randomMove(){const axes=['x','y','z'],axis=axes[Math.floor(Math.random()*3)],layer=[-1,0,1][Math.floor(Math.random()*3)],dir=Math.random()<.5?-1:1;return{axis,layer,dir}}
+function prepareRubik(){rubikHistory=[];rubikQueue=[];for(let i=0;i<12;i++){let m=randomMove();while(rubikQueue.length&&rubikQueue.at(-1).axis===m.axis&&rubikQueue.at(-1).layer===m.layer)m=randomMove();rubikQueue.push(m)}rubikPhase='scramble';rubikPhaseTime=0;activeMove=null}
+function startMove(m){const pivot=new THREE.Group();cubieRoot.add(pivot);const selected=cubieRoot.children.filter(o=>o.isMesh&&Math.round(o.userData.coord[m.axis])===m.layer);selected.forEach(o=>pivot.attach(o));activeMove={...m,pivot,selected,angle:0}}
+function finishMove(){const m=activeMove;const q=new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(m.axis==='x'?1:0,m.axis==='y'?1:0,m.axis==='z'?1:0),m.dir*Math.PI/2);m.selected.forEach(o=>{cubieRoot.attach(o);o.userData.coord.applyQuaternion(q);o.userData.coord.set(Math.round(o.userData.coord.x),Math.round(o.userData.coord.y),Math.round(o.userData.coord.z));o.position.set(o.userData.coord.x*cubieStep,o.userData.coord.y*cubieStep,o.userData.coord.z*cubieStep)});cubieRoot.remove(m.pivot);activeMove=null;if(rubikPhase==='scramble')rubikHistory.push({axis:m.axis,layer:m.layer,dir:m.dir})}
+function updateRubik(dt,s){
+  if(viewerInspect)return;
+  rubikPhaseTime+=dt;
+  if(!activeMove){
+    if(rubikQueue.length){startMove(rubikQueue.shift())}
+    else if(rubikPhase==='scramble'){rubikPhase='scrambledPause';rubikPhaseTime=0}
+    else if(rubikPhase==='scrambledPause'&&rubikPhaseTime>1.2){rubikPhase='return';rubikPhaseTime=0;rubikQueue=rubikHistory.slice().reverse().map(m=>({axis:m.axis,layer:m.layer,dir:-m.dir}));rubikHistory=[]}
+    else if(rubikPhase==='return'){rubikPhase='completePause';rubikPhaseTime=0;if(isViewerMode())enterViewerInspect()}
+    else if(rubikPhase==='completePause'&&rubikPhaseTime>1.5){rebuildCube();prepareRubik()}
+  }
+  if(activeMove){const step=Math.min(Math.PI/2-activeMove.angle,dt*s*2.7);activeMove.angle+=step;activeMove.pivot.rotation[activeMove.axis]+=activeMove.dir*step;if(activeMove.angle>=Math.PI/2-.0001)finishMove()}
+}
+function animate(now){requestAnimationFrame(animate);const dt=Math.min(.05,(now-last)/1000);last=now;updateViewExtras(dt);controls.update();if(playing){const s=+$('#speed').value;elapsed+=dt*s;updateRubik(dt,s)}renderer.render(scene,camera)}requestAnimationFrame(animate);
+canvas.addEventListener('pointerdown',e=>{
+  if(!viewerInspect)return;
+  inspectPtrs.set(e.pointerId,{x:e.clientX,y:e.clientY,moved:false});
+});
+canvas.addEventListener('pointermove',e=>{
+  const p=inspectPtrs.get(e.pointerId);if(!p||!viewerInspect)return;
+  if(Math.hypot(e.clientX-p.x,e.clientY-p.y)>10)p.moved=true;
+});
+function onInspectPointerEnd(e){
+  if(!viewerInspect)return;
+  const p=inspectPtrs.get(e.pointerId);inspectPtrs.delete(e.pointerId);
+  if(inspectPtrs.size>0)return;
+  if(p&&!p.moved)resumeViewerDemo();
+}
+canvas.addEventListener('pointerup',onInspectPointerEnd);
+canvas.addEventListener('pointercancel',onInspectPointerEnd);
+window.addEventListener('pointerup',onInspectPointerEnd);
+window.addEventListener('pointercancel',onInspectPointerEnd);
+function downloadCanvas(c,name){const a=document.createElement('a');a.download=name;a.href=c.toDataURL('image/png');a.click()}
+const NET_FACE_POS={top:[2,0],back:[0,1],right:[1,1],front:[2,1],left:[3,1],bottom:[2,2]};
+const POST_NET_LAYOUT={tile:1024,gap:36,pad:96};
+function drawCornerMarkers(x,w,h,size,lineW,color='#e2e8f0'){
+  x.save();
+  x.strokeStyle=color;
+  x.lineWidth=lineW;
+  x.lineCap='round';
+  const s=size;
+  const corners=[
+    {x:lineW*2,y:lineW*2,dx:1,dy:1},
+    {x:w-lineW*2,y:lineW*2,dx:-1,dy:1},
+    {x:lineW*2,y:h-lineW*2,dx:1,dy:-1},
+    {x:w-lineW*2,y:h-lineW*2,dx:-1,dy:-1}
+  ];
+  for(const c of corners){
+    x.beginPath();
+    x.moveTo(c.x,c.y);
+    x.lineTo(c.x+c.dx*s,c.y);
+    x.moveTo(c.x,c.y);
+    x.lineTo(c.x,c.y+c.dy*s);
+    x.stroke();
+  }
+  x.restore();
+}
+function renderNetCanvas(tile=720,gap=24,pad=48,{stroke=true,markers=false}={}){
+  const w=pad*2+tile*4+gap*3,h=pad*2+tile*3+gap*2,c=document.createElement('canvas');c.width=w;c.height=h;
+  const x=c.getContext('2d');x.imageSmoothingEnabled=true;x.imageSmoothingQuality='high';
+  x.fillStyle='#090f1b';x.fillRect(0,0,w,h);
+  for(const f of faceNames){
+    const [col,row]=NET_FACE_POS[f],px=pad+col*(tile+gap),py=pad+row*(tile+gap);
+    x.drawImage(processedCanvas(f),px,py,tile,tile);
+    if(stroke){x.strokeStyle='rgba(255,255,255,.72)';x.lineWidth=Math.max(4,tile/96);x.strokeRect(px,py,tile,tile)}
+  }
+  if(markers)drawCornerMarkers(x,w,h,Math.max(28,tile/12),Math.max(5,tile/180));
+  return c;
+}
+const SCRAMBLE_STEPS=22;
+const MOVE_CODE_ALPHABET='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_';
+let lastSharedMoves=null,lastSharedMoveCode='',lastSharedNetCanvas=null,lastSharedNetFilename='',pendingPasteMoves=null;
+const FACE_FRAME={
+  right:{normal:[1,0,0],col:[0,0,-1],row:[0,-1,0]},
+  left:{normal:[-1,0,0],col:[0,0,1],row:[0,-1,0]},
+  top:{normal:[0,1,0],col:[1,0,0],row:[0,0,1]},
+  bottom:{normal:[0,-1,0],col:[1,0,0],row:[0,0,-1]},
+  front:{normal:[0,0,1],col:[1,0,0],row:[0,-1,0]},
+  back:{normal:[0,0,-1],col:[-1,0,0],row:[0,-1,0]}
+};
+function vecEq(a,b){return a[0]===b[0]&&a[1]===b[1]&&a[2]===b[2]}
+function vecNeg(v){return[-v[0],-v[1],-v[2]]}
+function faceCellToPos(face,col,row){
+  if(face==='right')return[1,1-row,1-col];
+  if(face==='left')return[-1,1-row,col-1];
+  if(face==='top')return[col-1,1,row-1];
+  if(face==='bottom')return[col-1,-1,1-row];
+  if(face==='front')return[col-1,1-row,1];
+  return[1-col,1-row,-1];
+}
+function rotateVecByMove(v,m){
+  const [x,y,z]=v;
+  if(m.axis==='x')return m.dir===1?[x,-z,y]:[x,z,-y];
+  if(m.axis==='y')return m.dir===1?[z,y,-x]:[-z,y,x];
+  return m.dir===1?[-y,x,z]:[y,-x,z];
+}
+function makeSolvedStickers(){
+  const stickers=[];
+  for(const face of faceNames){
+    const frame=FACE_FRAME[face];
+    for(let row=0;row<3;row++)for(let col=0;col<3;col++){
+      stickers.push({
+        sourceFace:face,
+        sourceRow:row,
+        sourceCol:col,
+        pos:faceCellToPos(face,col,row),
+        normal:[...frame.normal],
+        colDir:[...frame.col],
+        rowDir:[...frame.row]
+      });
+    }
+  }
+  return stickers;
+}
+function applyMoveToStickers(stickers,m){
+  const axisIdx=m.axis==='x'?0:m.axis==='y'?1:2;
+  for(const s of stickers){
+    if(s.pos[axisIdx]!==m.layer)continue;
+    s.pos=rotateVecByMove(s.pos,m);
+    s.normal=rotateVecByMove(s.normal,m);
+    s.colDir=rotateVecByMove(s.colDir,m);
+    s.rowDir=rotateVecByMove(s.rowDir,m);
+  }
+}
+function createScrambleMoves(count=SCRAMBLE_STEPS){
+  const moves=[];
+  for(let i=0;i<count;i++){
+    let m=randomMove();
+    while(moves.length&&moves.at(-1).axis===m.axis&&moves.at(-1).layer===m.layer)m=randomMove();
+    moves.push(m);
+  }
+  return moves;
+}
+function moveToCodeIndex(m){
+  const axisIdx=m.axis==='x'?0:m.axis==='y'?1:2;
+  const layerIdx=m.layer+1;
+  const dirIdx=m.dir===1?1:0;
+  return axisIdx*6+layerIdx*2+dirIdx;
+}
+function codeIndexToMove(idx){
+  if(idx<0||idx>17)return null;
+  const axisIdx=Math.floor(idx/6),rest=idx%6;
+  const layerIdx=Math.floor(rest/2),dirIdx=rest%2;
+  const axis=axisIdx===0?'x':axisIdx===1?'y':'z';
+  const layer=layerIdx-1;
+  const dir=dirIdx===1?1:-1;
+  return{axis,layer,dir};
+}
+function encodeMoves(moves){return moves.map(m=>MOVE_CODE_ALPHABET[moveToCodeIndex(m)]).join('')}
+function decodeMoves(code){
+  if(!code)return null;
+  const moves=[];
+  for(const ch of code){
+    const idx=MOVE_CODE_ALPHABET.indexOf(ch);
+    const m=codeIndexToMove(idx);
+    if(!m)return null;
+    moves.push(m);
+  }
+  return moves.length?moves:null;
+}
+function scrambleStickers(moves){
+  const stickers=makeSolvedStickers();
+  for(const m of moves)applyMoveToStickers(stickers,m);
+  return stickers;
+}
+function stickerRotationSteps(sticker,targetFace){
+  const target=FACE_FRAME[targetFace];
+  const options=[
+    [sticker.colDir,sticker.rowDir],
+    [sticker.rowDir,vecNeg(sticker.colDir)],
+    [vecNeg(sticker.colDir),vecNeg(sticker.rowDir)],
+    [vecNeg(sticker.rowDir),sticker.colDir]
+  ];
+  for(let i=0;i<4;i++){
+    if(vecEq(options[i][0],target.col)&&vecEq(options[i][1],target.row))return i;
+  }
+  return 0;
+}
+function findSticker(stickers,face,col,row){
+  const targetPos=faceCellToPos(face,col,row),targetNormal=FACE_FRAME[face].normal;
+  return stickers.find(s=>vecEq(s.pos,targetPos)&&vecEq(s.normal,targetNormal));
+}
+function drawSticker(ctx,cache,sticker,targetFace,dx,dy,size){
+  const src=cache[sticker.sourceFace];
+  const unit=src.width/3;
+  const sx=sticker.sourceCol*unit,sy=sticker.sourceRow*unit;
+  const turns=stickerRotationSteps(sticker,targetFace);
+  ctx.save();
+  ctx.translate(dx+size/2,dy+size/2);
+  ctx.rotate(turns*Math.PI/2);
+  ctx.drawImage(src,sx,sy,unit,unit,-size/2,-size/2,size,size);
+  ctx.restore();
+}
+function renderScrambledNetCanvas(moves,tile=POST_NET_LAYOUT.tile,gap=POST_NET_LAYOUT.gap,pad=POST_NET_LAYOUT.pad){
+  const stickers=scrambleStickers(moves);
+  const cache={};for(const f of faceNames)cache[f]=processedCanvas(f);
+  const w=pad*2+tile*4+gap*3,h=pad*2+tile*3+gap*2,c=document.createElement('canvas');c.width=w;c.height=h;
+  const x=c.getContext('2d');x.imageSmoothingEnabled=true;x.imageSmoothingQuality='high';
+  x.fillStyle='#090f1b';x.fillRect(0,0,w,h);
+  const cell=tile/3;
+  for(const f of faceNames){
+    const [col,row]=NET_FACE_POS[f],px=pad+col*(tile+gap),py=pad+row*(tile+gap);
+    for(let r=0;r<3;r++)for(let cl=0;cl<3;cl++){
+      const s=findSticker(stickers,f,cl,r);
+      if(s)drawSticker(x,cache,s,f,px+cl*cell,py+r*cell,cell);
+    }
+    x.strokeStyle='rgba(255,255,255,.72)';
+    x.lineWidth=Math.max(4,tile/96);
+    x.strokeRect(px,py,tile,tile);
+  }
+  drawCornerMarkers(x,w,h,Math.max(28,tile/12),Math.max(5,tile/180));
+  return c;
+}
+function drawRotatedCrop(src,sx,sy,sw,sh,dstCtx,dx,dy,size,turns){
+  dstCtx.save();
+  dstCtx.translate(dx+size/2,dy+size/2);
+  dstCtx.rotate(turns*Math.PI/2);
+  dstCtx.drawImage(src,sx,sy,sw,sh,-size/2,-size/2,size,size);
+  dstCtx.restore();
+}
+function reconstructSolvedFacesFromScrambledFaces(scrambledFaces,moves){
+  const stickers=scrambleStickers(moves);
+  const solved={};
+  for(const f of faceNames){
+    const c=document.createElement('canvas');
+    c.width=c.height=900;
+    const x=c.getContext('2d');
+    x.fillStyle='#10151f';
+    x.fillRect(0,0,900,900);
+    solved[f]=c;
+  }
+  const cell=300;
+  for(const face of faceNames){
+    const src=scrambledFaces[face];
+    for(let row=0;row<3;row++)for(let col=0;col<3;col++){
+      const s=findSticker(stickers,face,col,row);
+      if(!s)continue;
+      const turns=stickerRotationSteps(s,face);
+      const dst=solved[s.sourceFace],dx=s.sourceCol*cell,dy=s.sourceRow*cell;
+      const dctx=dst.getContext('2d');
+      drawRotatedCrop(src,col*cell,row*cell,cell,cell,dctx,dx,dy,cell,-turns);
+    }
+  }
+  return solved;
+}
+function imageToCanvas(img){
+  const c=document.createElement('canvas');
+  c.width=img.width;
+  c.height=img.height;
+  const x=c.getContext('2d');
+  x.drawImage(img,0,0);
+  return c;
+}
+function rotateCanvas90(canvasIn){
+  const c=document.createElement('canvas');
+  c.width=canvasIn.height;
+  c.height=canvasIn.width;
+  const x=c.getContext('2d');
+  x.translate(c.width/2,c.height/2);
+  x.rotate(Math.PI/2);
+  x.drawImage(canvasIn,-canvasIn.width/2,-canvasIn.height/2);
+  return c;
+}
+function pickNetOrientationCanvas(img,layout=POST_NET_LAYOUT){
+  const baseW=layout.pad*2+layout.tile*4+layout.gap*3;
+  const baseH=layout.pad*2+layout.tile*3+layout.gap*2;
+  const ratio=baseW/baseH;
+  const c0=imageToCanvas(img),c1=rotateCanvas90(c0);
+  const d0=Math.abs(c0.width/c0.height-ratio),d1=Math.abs(c1.width/c1.height-ratio);
+  return d1<d0?c1:c0;
+}
+function detectNetBounds(canvasIn){
+  const w=canvasIn.width,h=canvasIn.height;
+  const x=canvasIn.getContext('2d');
+  const data=x.getImageData(0,0,w,h).data;
+  const idx=(px,py)=>(py*w+px)*4;
+  const px=(px,py)=>{const i=idx(px,py);return[data[i],data[i+1],data[i+2]]};
+  const corners=[px(0,0),px(w-1,0),px(0,h-1),px(w-1,h-1)];
+  const bg=[
+    (corners[0][0]+corners[1][0]+corners[2][0]+corners[3][0])/4,
+    (corners[0][1]+corners[1][1]+corners[2][1]+corners[3][1])/4,
+    (corners[0][2]+corners[1][2]+corners[2][2]+corners[3][2])/4
+  ];
+  const isFg=(r,g,b)=>Math.abs(r-bg[0])+Math.abs(g-bg[1])+Math.abs(b-bg[2])>34;
+  const colHits=col=>{
+    let hit=0;
+    for(let y=0;y<h;y+=2){
+      const i=idx(col,y);
+      if(isFg(data[i],data[i+1],data[i+2]))hit++;
+    }
+    return hit;
+  };
+  const rowHits=row=>{
+    let hit=0;
+    for(let x0=0;x0<w;x0+=2){
+      const i=idx(x0,row);
+      if(isFg(data[i],data[i+1],data[i+2]))hit++;
+    }
+    return hit;
+  };
+  const minColHits=Math.max(3,Math.floor(h*0.006));
+  const minRowHits=Math.max(3,Math.floor(w*0.006));
+  let left=0,right=w-1,top=0,bottom=h-1;
+  for(let c=0;c<w;c++){if(colHits(c)>=minColHits){left=c;break}}
+  for(let c=w-1;c>=0;c--){if(colHits(c)>=minColHits){right=c;break}}
+  for(let r=0;r<h;r++){if(rowHits(r)>=minRowHits){top=r;break}}
+  for(let r=h-1;r>=0;r--){if(rowHits(r)>=minRowHits){bottom=r;break}}
+  const bw=right-left+1,bh=bottom-top+1;
+  if(bw<w*0.5||bh<h*0.5)return{x:0,y:0,width:w,height:h};
+  return{x:left,y:top,width:bw,height:bh};
+}
+function netLayoutScaledForImage(img,layout=POST_NET_LAYOUT){
+  const oriented=pickNetOrientationCanvas(img,layout);
+  const bounds=detectNetBounds(oriented);
+  const baseW=layout.pad*2+layout.tile*4+layout.gap*3;
+  const baseH=layout.pad*2+layout.tile*3+layout.gap*2;
+  const scaleX=bounds.width/baseW,scaleY=bounds.height/baseH;
+  return{
+    source:oriented,
+    tileX:layout.tile*scaleX,
+    tileY:layout.tile*scaleY,
+    gapX:layout.gap*scaleX,
+    gapY:layout.gap*scaleY,
+    padX:bounds.x+layout.pad*scaleX,
+    padY:bounds.y+layout.pad*scaleY
+  };
+}
+function extractFacesFromNetImage(img,layout=POST_NET_LAYOUT){
+  const s=netLayoutScaledForImage(img,layout),out={};
+  for(const f of faceNames){
+    const [col,row]=NET_FACE_POS[f];
+    const sx=s.padX+col*(s.tileX+s.gapX),sy=s.padY+row*(s.tileY+s.gapY);
+    const c=document.createElement('canvas');c.width=c.height=900;
+    const x=c.getContext('2d');x.imageSmoothingEnabled=true;x.imageSmoothingQuality='high';
+    x.drawImage(s.source,sx,sy,s.tileX,s.tileY,0,0,900,900);
+    out[f]=c;
+  }
+  return out;
+}
+function applyFacesToSlots(faces,name='pasted'){
+  for(const f of faceNames){
+    if(slots[f].url)URL.revokeObjectURL(slots[f].url);
+    slots[f]={source:faces[f],rotation:0,url:null,name,zoom:1,offsetX:0,offsetY:0};
+  }
+  refreshNet();
+}
+async function readImageFromBlob(blob){
+  return await new Promise((res,rej)=>{
+    const url=URL.createObjectURL(blob),im=new Image();
+    im.onload=()=>{URL.revokeObjectURL(url);res(im)};
+    im.onerror=()=>{URL.revokeObjectURL(url);rej(new Error(tr('画像を読み込めませんでした','Failed to load image'))) };
+    im.src=url;
+  });
+}
+async function applyPastedNetImageBlob(blob){
+  const img=await readImageFromBlob(blob);
+  let faces=extractFacesFromNetImage(img,POST_NET_LAYOUT);
+  if(pendingPasteMoves?.length)faces=reconstructSolvedFacesFromScrambledFaces(faces,pendingPasteMoves);
+  applyFacesToSlots(faces,'pasted-net');
+}
+async function copyCanvasImage(c){
+  if(!navigator.clipboard?.write||typeof ClipboardItem==='undefined')throw new Error(tr('このブラウザは画像コピー非対応です','This browser does not support image clipboard copy.'));
+  const blob=await new Promise(res=>c.toBlob(res,'image/png'));
+  if(!blob)throw new Error(tr('画像化に失敗しました','Failed to encode image.'));
+  await navigator.clipboard.write([new ClipboardItem({'image/png':blob})]);
+}
+async function canvasToImageFile(c,name,type='image/png',quality){
+  const blob=await new Promise(res=>c.toBlob(res,type,quality));
+  if(!blob)throw new Error(tr('画像化に失敗しました','Failed to encode image.'));
+  return new File([blob],name,{type});
+}
+async function copyRandomizedNet(){
+  if(filledCount()<6){toast(tr('まず6枚の画像を設定してください','Please set all 6 images first.'),3200);return}
+  const moves=createScrambleMoves();
+  lastSharedMoves=moves;
+  lastSharedMoveCode=encodeMoves(moves);
+  const stamp=new Date().toISOString().replace(/[:.]/g,'-');
+  lastSharedNetCanvas=renderScrambledNetCanvas(moves);
+  lastSharedNetFilename=`cube-net-random-${stamp}`;
+  const viewerUrl=`${baseUrlWithLang()}#paste&m=${lastSharedMoveCode}`;
+  if(IS_MOBILE_SHARE_MODE){
+    try{
+      await copyText(buildXPostText(viewerUrl,true));
+      toast(tr('共有テキストをコピーしました。次に②を押してX投稿画面で本文に貼り付けてください。','Copied share text. Next, press step 2 and paste it into the X post body.'),4800);
+    }catch{
+      toast(tr('共有テキストをコピーできませんでした。再度お試しください。','Could not copy share text. Please try again.'),4200);
+    }
+    return;
+  }
+  try{
+    await copyCanvasImage(lastSharedNetCanvas);
+    toast(tr(`手順スクランブル（${moves.length}手）をコピーしました。次に②を押してX投稿へ進んでください`,`Copied randomized net (${moves.length} moves). Next, press step 2 to post on X.`),4600);
+  }catch{
+    downloadCanvas(lastSharedNetCanvas,`${lastSharedNetFilename}.png`);
+    toast(tr('画像コピー非対応のためPNGを保存しました。投稿に添付してください','Clipboard image copy is not supported, so a PNG was saved. Please attach it to your post.'),4200);
+  }
+}
+function buildXPostText(viewerUrl,forMobileCopy=false){
+  return `🧩 90 Days Cube\nViewer: ${viewerUrl}\n${forMobileCopy?t('xPostGuideMobile'):t('xPostGuide')}`;
+}
+function openXIntent(viewerUrl){
+  const url=`https://x.com/intent/tweet?text=${encodeURIComponent(buildXPostText(viewerUrl))}`;
+  window.open(url,'_blank','noopener,noreferrer');
+}
+async function postToX(){
+  if(filledCount()<6){toast(tr('まず6枚の画像を設定してください','Please set all 6 images first.'),3200);return}
+  if(!lastSharedMoveCode||!lastSharedNetCanvas){toast(tr('先に①ボタンを押して共有データを準備してください','Please press step 1 first to prepare share data.'),3800);return}
+  const viewerUrl=`${baseUrlWithLang()}#paste&m=${lastSharedMoveCode}`;
+  if(IS_MOBILE_SHARE_MODE&&navigator.share){
+    try{
+      const file=await canvasToImageFile(lastSharedNetCanvas,`${lastSharedNetFilename}.jpg`,'image/jpeg',0.96);
+      if(navigator.canShare&&!navigator.canShare({files:[file]}))throw new Error(tr('この端末では画像共有に対応していません','This device cannot share image files.'));
+      await navigator.share({title:'90 Days Cube',files:[file]});
+      toast(tr('X投稿画面で本文へ先ほどコピーした共有テキストを貼り付けて投稿してください。','In the X post screen, paste the share text copied in step 1, then post.'),5000);
+      return;
+    }catch(err){
+      if(err?.name==='AbortError')return;
+      downloadCanvas(lastSharedNetCanvas,`${lastSharedNetFilename}.png`);
+      toast(err?.message||tr('画像共有を開始できませんでした。画像を保存したので、X投稿で添付して本文に共有テキストを貼り付けてください。','Could not start image sharing. The image was saved; attach it in X and paste the copied share text.'),5200);
+    }
+  }
+  if(location.protocol==='file:')toast(tr('ローカルファイルURLは他環境で開けません。公開URLで使ってください。','A local file URL cannot be opened on other devices. Please use a hosted public URL.'),4600);
+  openXIntent(viewerUrl);
+  toast(IS_MOBILE_SHARE_MODE
+    ?tr('投稿画面を開きました。画像を添付し、本文に先ほどコピーした共有テキストを貼り付けてください。','Opened the post window. Attach the image and paste the share text you copied into the post body.')
+    :tr('投稿画面を開きました。先ほどコピーした展開図を貼り付けてください','Opened the post window. Please paste the net image you copied.')
+  ,4200);
+}
+$('#snapshot').onclick=()=>{renderer.render(scene,camera);downloadCanvas(canvas,`cube-${new Date().toISOString().replace(/[:.]/g,'-')}.png`);toast(tr('立方体PNGを保存しました','Saved cube PNG.'))};
+$('#netSnapshot').onclick=()=>{downloadCanvas(renderNetCanvas(POST_NET_LAYOUT.tile,POST_NET_LAYOUT.gap,POST_NET_LAYOUT.pad,{stroke:true,markers:true}),`cube-net-${new Date().toISOString().replace(/[:.]/g,'-')}.png`);toast(tr('展開図PNGを保存しました（高解像度）','Saved net PNG (high resolution).'))};
+$('#randomNetCopy').onclick=()=>copyRandomizedNet();
+$('#postToX').onclick=()=>postToX();
+async function toggleFullscreen(){try{if(!document.fullscreenElement)await stage.requestFullscreen();else await document.exitFullscreen()}catch{toast(tr('全画面表示を開始できませんでした','Could not start fullscreen mode.'))}}
+$('#fullscreen').onclick=$('#topFs').onclick=()=>toggleFullscreen();
+let toastTimer;function toast(msg,ms=2200){const t=$('#toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),ms)}
+let pasteBusy=false;
+function showPasteGate(v=true){$('#pasteGate').classList.toggle('show',v)}
+async function handlePastedBlob(blob){
+  if(pasteBusy)return;
+  pasteBusy=true;
+  try{
+    await applyPastedNetImageBlob(blob);
+    showPasteGate(false);
+    enterViewerMode();
+    if(!playing)setPlaying(true);
+    toast(tr('展開図を読み込みました。再生します','Net image loaded. Starting playback.'),3200);
+  }catch{
+    toast(tr('展開図の読み込みに失敗しました。画像全体をそのまま貼り付けてください。','Failed to load the net image. Please paste the full image as-is.'),4200);
+  }finally{
+    pasteBusy=false;
+  }
+}
+window.addEventListener('paste',async e=>{
+  if(!$('#pasteGate').classList.contains('show'))return;
+  const items=[...(e.clipboardData?.items||[])];
+  const imageItem=items.find(it=>it.kind==='file'&&it.type.startsWith('image/'));
+  if(!imageItem)return;
+  e.preventDefault();
+  const file=imageItem.getAsFile();
+  if(file)await handlePastedBlob(file);
+});
+$('#pasteClose').onclick=()=>showPasteGate(false);
+$('#pasteRead').onclick=async()=>{
+  if(!navigator.clipboard?.read){toast(tr('この環境ではクリップボード読み取りに対応していません','Clipboard read is not supported in this environment.'),3600);return}
+  try{
+    const items=await navigator.clipboard.read();
+    for(const it of items){
+      const imageType=it.types.find(t=>t.startsWith('image/'));
+      if(!imageType)continue;
+      const blob=await it.getType(imageType);
+      await handlePastedBlob(blob);
+      return;
+    }
+    toast(tr('クリップボードに画像が見つかりません','No image found on the clipboard.'),3200);
+  }catch{
+    toast(tr('クリップボード読み取りに失敗しました（権限/HTTPSを確認）','Failed to read clipboard (check permissions / HTTPS).'),4200);
+  }
+};
+if(!navigator.clipboard?.read)$('#pasteRead').disabled=true;
+
+const PASTE_API='https://api.pastes.dev';
+const SHARE_NET_LAYOUT={tile:384,gap:12,pad:18};
+const PRIVATE_SHARE_ENABLED=IS_PASTE_SHARE_HASH||STARTUP_PARAMS.get('share')==='private'||['1','true','on'].includes((STARTUP_PARAMS.get('privateShare')||'').toLowerCase());
+function pasteServiceError(kind,detail=''){
+  const base=kind==='upload'
+    ?tr('共有サーバー（pastes.dev）に保存できませんでした','Failed to save to the share server (pastes.dev)')
+    :tr('共有サーバー（pastes.dev）から読み込めませんでした','Failed to fetch from the share server (pastes.dev)');
+  return new Error(detail?`${base}. ${detail}`:tr(`${base}。時間をおいて再度お試しください。`,`${base}. Please try again later.`));
+}
+function loadImageFromJpegB64(b64){
+  return new Promise((res,rej)=>{const im=new Image();im.onload=()=>res(im);im.onerror=rej;im.src='data:image/jpeg;base64,'+b64});
+}
+function netToShareJpeg(tile=SHARE_NET_LAYOUT.tile,gap=SHARE_NET_LAYOUT.gap,pad=SHARE_NET_LAYOUT.pad,q=.8){
+  return renderNetCanvas(tile,gap,pad,{stroke:false}).toDataURL('image/jpeg',q).split(',')[1];
+}
+function sliceNetImageToFaces(img,layout){
+  const tile=layout.tile,gap=layout.gap,pad=layout.pad,out={};
+  for(const f of faceNames){
+    const [col,row]=NET_FACE_POS[f],sx=pad+col*(tile+gap),sy=pad+row*(tile+gap);
+    const c=document.createElement('canvas');c.width=c.height=Math.max(384,tile);
+    const x=c.getContext('2d');x.imageSmoothingEnabled=true;x.imageSmoothingQuality='high';
+    x.drawImage(img,sx,sy,tile,tile,0,0,c.width,c.height);
+    out[f]=c;
+  }
+  return out;
+}
+const SHARE_META={
+  app:'90 Days Cube',
+  appId:'90DaysCube',
+  author:'Satoshi Endo',
+  contact:'https://github.com/hortense667/CubeImageViewer',
+  x:'https://x.com/hortense667',
+  purpose:'User-initiated share payload (net image + viewer settings). Uploaded only on explicit button click.'
+};
+async function buildSharePayload(){
+  if(filledCount()<6)throw new Error(tr('共有には画像が6枚必要です','6 images are required for sharing.'));
+  const layout={...SHARE_NET_LAYOUT};
+  return{v:2,...SHARE_META,lang:currentLang,net:netToShareJpeg(layout.tile,layout.gap,layout.pad),layout,speed:+$('#speed').value,spin:$('#spin').checked,random:$('#randomView').checked,play:true};
+}
+async function uploadSharePayload(json){
+  let res;
+  try{res=await fetch(`${PASTE_API}/post`,{method:'POST',headers:{'Content-Type':'text/plain','Accept':'application/json'},body:json})}
+  catch{throw pasteServiceError('upload',tr('ネットワークに接続できないか、サービスが一時停止している可能性があります','Network unavailable or the service may be temporarily down'))}
+  if(!res.ok)throw pasteServiceError('upload',res.status===429?tr('アクセスが集中しています','Too many requests'):tr(`エラーコード ${res.status}`,`Error code ${res.status}`));
+  let key='';
+  try{const data=await res.json();key=data?.key||''}catch{}
+  if(!key){const loc=res.headers.get('Location')||'';key=loc.split('/').filter(Boolean).pop()||loc.replace(/^\//,'')}
+  key=(key||'').trim().replace(/^\/+/,'');
+  if(!/^[A-Za-z0-9_-]{4,64}$/.test(key))throw pasteServiceError('upload',tr('共有IDを取得できませんでした','Could not obtain a share ID'));
+  return key;
+}
+async function fetchShareById(key){
+  let res;
+  try{res=await fetch(`${PASTE_API}/${encodeURIComponent(key)}`,{headers:{Accept:'text/plain, application/json'}})}
+  catch{throw pasteServiceError('fetch',tr('ネットワークに接続できないか、サービスが一時停止している可能性があります','Network unavailable or the service may be temporarily down'))}
+  if(!res.ok){
+    if(res.status===404)throw new Error(tr('共有データが見つかりません。期限切れ（約90日）か、リンクが壊れている可能性があります','Shared data was not found. It may have expired or the link may be invalid.'));
+    throw pasteServiceError('fetch',res.status===429?tr('アクセスが集中しています','Too many requests'):tr(`エラーコード ${res.status}`,`Error code ${res.status}`));
+  }
+  let data;
+  try{data=JSON.parse(await res.text())}catch{throw pasteServiceError('fetch',tr('データ形式が不正です','Invalid data format'))}
+  if((data.v!==1||!data.faces)&&(data.v!==2||!data.net))throw new Error(tr('対応していない共有形式です','Unsupported share format.'));
+  return data;
+}
+const SHARE_RATE={max:8,windowMs:60*60*1000,key:'90dc-share-log'};
+function assertShareRateLimit(){
+  const now=Date.now();
+  let log=[];
+  try{log=JSON.parse(localStorage.getItem(SHARE_RATE.key)||'[]')}catch{log=[]}
+  if(!Array.isArray(log))log=[];
+  log=log.filter(t=>typeof t==='number'&&now-t<SHARE_RATE.windowMs);
+  if(log.length>=SHARE_RATE.max)throw new Error(tr(`共有の作成が一時的に多すぎます（1時間あたり最大${SHARE_RATE.max}回）。しばらくしてから再度お試しください。`,`Too many share creations in a short time (max ${SHARE_RATE.max}/hour). Please try again later.`));
+  log.push(now);
+  localStorage.setItem(SHARE_RATE.key,JSON.stringify(log));
+}
+async function createShortShareUrl(){
+  assertShareRateLimit();
+  toast(tr('共有リンクを作成中…','Creating share link...'),6000);
+  const json=JSON.stringify(await buildSharePayload());
+  const key=await uploadSharePayload(json);
+  return `${baseUrlWithLang()}#i=${key}`;
+}
+async function copyText(text){
+  if(navigator.clipboard?.writeText){try{await navigator.clipboard.writeText(text);return}catch{}}
+  const ta=document.createElement('textarea');ta.value=text;ta.style.cssText='position:fixed;left:-9999px';document.body.appendChild(ta);ta.focus();ta.select();
+  const ok=document.execCommand('copy');ta.remove();if(!ok)throw new Error(tr('クリップボードへコピーできませんでした','Could not copy to clipboard.'));
+}
+async function copyShareLink(){
+  if(!PRIVATE_SHARE_ENABLED){toast(tr('この起動オプションでは限定共有リンクは無効です','Private share link is disabled for this startup option.'),3600);return}
+  try{
+    if(location.protocol==='file:'){toast(tr('ローカルファイルのURLは相手の環境では開けません。GitHub Pagesなどへ公開したうえで共有してください。','A local file URL cannot be opened on other devices. Host this app (e.g. GitHub Pages) before sharing.'),4500)}
+    const url=await createShortShareUrl();
+    await copyText(url);
+    toast(tr(`共有リンクをコピーしました（${url.length}文字）`,`Copied share link (${url.length} chars).`));
+  }catch(err){toast(err.message||tr('共有リンクを作成できませんでした','Could not create share link.'),4200)}
+}
+const shareLinkBtn=$('#shareLink');
+const privateShareBox=$('#privateShareBox');
+if(privateShareBox)privateShareBox.style.display=PRIVATE_SHARE_ENABLED?'block':'none';
+if(shareLinkBtn&&PRIVATE_SHARE_ENABLED)shareLinkBtn.onclick=()=>copyShareLink();
+
+function enterViewerMode(){
+  document.body.classList.add('body-viewer');
+  const base=baseUrlWithLang();
+  const link=$('#makeOwn');link.href=base;link.title=currentLang==='en'?'Create your own cube in 90 Days Cube':'90 Days Cube で自分のキューブを作る';
+  controls.minDistance=2.4;setView(28,-18,VIEWER_DIST);
+  resize();
+}
+async function applySharePayload(data){
+  if(data.lang==='en')setLanguage('en');else if(data.lang==='ja')setLanguage('ja');
+  if(data.v===2&&data.net){
+    const img=await loadImageFromJpegB64(data.net);
+    const layout={tile:data.layout?.tile??SHARE_NET_LAYOUT.tile,gap:data.layout?.gap??SHARE_NET_LAYOUT.gap,pad:data.layout?.pad??SHARE_NET_LAYOUT.pad};
+    const faces=sliceNetImageToFaces(img,layout);
+    for(const f of faceNames){
+      if(slots[f].url)URL.revokeObjectURL(slots[f].url);
+      slots[f]={source:faces[f],rotation:0,url:null,name:'shared',zoom:1,offsetX:0,offsetY:0};
+    }
+  }else if(data.v===1&&data.faces){
+    for(const f of faceNames){
+      const b64=data.faces?.[f];if(!b64)throw new Error(tr('共有データが不完全です','Shared data is incomplete.'));
+      const im=await loadImageFromJpegB64(b64);
+      if(slots[f].url)URL.revokeObjectURL(slots[f].url);
+      slots[f]={source:im,rotation:0,url:null,name:'shared',zoom:1,offsetX:0,offsetY:0};
+    }
+  }else throw new Error(tr('対応していない共有形式です','Unsupported share format.'));
+  $('#speed').value=data.speed??.8;$('#speedOut').textContent=(+$('#speed').value).toFixed(2)+'×';
+  $('#spin').checked=data.spin!==false;$('#randomView').checked=(data.random===undefined)?true:!!data.random;
+  if($('#randomView').checked)pickSpinDirection();else resetSpinAxis();
+  refreshNet();
+  enterViewerMode();
+  $('#shareGate').classList.add('show');
+  if(data.play!==false)setPlaying(true);
+}
+$('#shareGateBtn').onclick=async()=>{
+  $('#shareGate').classList.remove('show');
+  if(!playing)setPlaying(true);
+  await toggleFullscreen();
+};
+async function tryRestoreShareFromHash(){
+  const hash=location.hash||'';
+  try{
+    if(hash.startsWith('#paste')){
+      resetObject();
+      enterViewerMode();
+      const query=hash.includes('&')?hash.slice(hash.indexOf('&')+1):'';
+      const params=new URLSearchParams(query);
+      const moveCode=(params.get('m')||'').trim();
+      pendingPasteMoves=decodeMoves(moveCode);
+      if(moveCode&&!pendingPasteMoves)toast(tr('投稿URLの復元手順が不正です。画像だけ読み込みます。','Invalid restore steps in post URL. Image-only load will continue.'),4200);
+      showPasteGate(true);
+      toast(tr('画像を読み込んでください（Ctrl+V / クリップボードから読み取り）','Load an image (Ctrl+V / Read from Clipboard).'),4200);
+      document.documentElement.classList.remove('boot-shared');
+      return;
+    }
+    if(hash.startsWith('#i=')){
+      enterViewerMode();
+      toast(tr('共有データを読み込み中…','Loading shared data...'),6000);
+      const data=await fetchShareById(decodeURIComponent(hash.slice(3)));
+      await applySharePayload(data);
+      toast(tr('共有キューブを開きました','Opened shared cube.'));
+      document.documentElement.classList.remove('boot-shared');
+      return;
+    }
+    if(hash.startsWith('#s=')){
+      toast(tr('この形式の長い共有リンクは非対応になりました。新しいリンクを作り直してください。','This old long-form share link is no longer supported. Please create a new link.'),5200);
+    }
+  }catch(err){
+    document.documentElement.classList.remove('boot-shared');
+    toast(err.message||tr('共有リンクを開けませんでした','Could not open shared link.'),4200);
+  }
+  document.documentElement.classList.remove('boot-shared');
+}
+tryRestoreShareFromHash();
+</script>
+</body>
+</html>
